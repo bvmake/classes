@@ -1,15 +1,16 @@
 (function ($) {
 
-	function pageLoaded() {
+	function pageLoaded () {
 		$('#add').on('click', showForm);
 		$('#submit').on('click', submitTodo);
 		$('#todos').on('click', '.delete', deleteTodo); //event delegation
 		load();
 	}
 
-	function loaded(data) {
+	function loaded (data) {
 		var todos = data || [];
 
+		$('#todos').empty();
 		for (var i = 0; i < todos.length; i++) {
 			$('#todos').append('<li data-id="'+todos[i].id+'"><span>'+todos[i].todo+'</span><button class="delete">x</button></li>');
 		}
@@ -17,7 +18,7 @@
 
 	/* TODO: implement errorOccurred */
 
-	function load() {
+	function load () {
 		$.ajax({
 			url: '/todos',
 			success: loaded /*,
@@ -26,18 +27,18 @@
 		});
 	}
 
-	function showForm() {
+	function showForm () {
 		$('#newTodo').toggle();
 	}
 
-	function postSent() {
+	function postSent () {
 		// A more efficient way, in terms of fewer network calls, to do this would be to return the current list of todos from the POST response.
 		load();
 	}
 
 	/* TODO: implement postErrorOccurred */
 
-	function submitTodo(e) {
+	function submitTodo (e) {
 		e.preventDefault();
 		e.stopPropagation();
 		var val = $('#todo').val();
@@ -58,26 +59,26 @@
 		return false;
 	}
 
-	function deleteTodo(e) {
+	function deleteSent () {
+		// A more efficient way, in terms of fewer network calls, to do this would be to return the current list of todos from the POST response.
+		load();
+	}
+
+	function deleteTodo (e) {
+		e.preventDefault();
+		e.stopPropagation();
 		var id = $(e.target).parent('li').data('id');
 
-		var todos = JSON.parse(localStorage['todos'] || '[]');
-
-		var index = -1;
-
-		for (var i = 0; i < todos.length; i++) {
-			if (todos[i].id == id) {
-				index = i;
-				break;
-			}
+		if (id) {
+			$.ajax({
+				url: '/todos/' + id,
+				method: 'DELETE',
+				success: deleteSent/*,
+				error: postErrorOccurred*/
+			});
 		}
 
-		if (index >= 0) {
-			todos.splice(index, index + 1);
-			localStorage['todos'] = JSON.stringify(todos);			
-		}
-
-		load();
+		return false;
 	}
 
 	$(document).on('ready', pageLoaded);
