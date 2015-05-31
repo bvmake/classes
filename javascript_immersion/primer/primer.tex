@@ -1,0 +1,141 @@
+\documentclass{article}
+
+\usepackage{csquotes} % \blockquote %
+
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+	linkcolor=red} % use red colored links instead of weird boxes
+
+\begin{document}
+
+\title{JavaScript by Immersion}
+\author{Brazos Valley Makers}
+
+\maketitle
+
+\section{About JavaScript}
+JavaScript is a prototypal, weakly typed, dynamically typed scripting language created for Netscape by Brendan Eich in 10 days in 1995\footnote{\url{ https://www.w3.org/community/webed/wiki/A_Short_History_of_JavaScript}}. All of these characteristics have specific implications for JavaScript, and we will explore each of them and others as we go along.
+
+\section{When in Doubt, Type it Out}
+This primer will take a kinesthetic, learning by doing, approach to JavaScript. As such, we will need some things, most notably a JavaScript REPL (Read Eval Print Loop—in our case Node) and a browser with decent console capabilities (Chrome or Firefox will suffice).
+
+\subsection{I Seriously Hope You Have a Browser Installed Already}
+If not, there is no hope for you, but I heard they are serving refreshments somewhere.
+
+\subsection{Installing Node}
+
+\subsubsection{On a Mac}
+
+\paragraph{If You Don’t Have Hombrew Installed}
+
+\begin{lstlisting}
+$ ruby -e "$(curl -fsSL\
+ https://raw.githubusercontent.com/Homebrew/install/master/install)"
+\end{lstlisting}
+
+\paragraph{Installing Node with Homebrew}
+
+\begin{lstlisting}
+$brew install node
+\end{lstlisting}
+
+When installing node with homebrew, you will see the following message:
+\blockquote{If you update npm itself, do NOT use the npm update command.
+The upstream-recommended way to update npm is:
+  npm install -g npm@latest
+}
+
+This is nothing to worry about. It simply means, that when you want to update the node package manager, do it like so:
+
+\begin{lstlisting}
+$npm install -g npm@latest
+\end{lstlisting}
+
+\subsubsection{On Windows}
+Go to \url{https://nodejs.org/download/} and download the installer. Run the installer.
+
+\section{Functions}
+Simply put, a function performs one or more operations. Functions can exist on their own. Functions can be use to define objects. Functions can be used to give objects behavior.
+
+\subsection{Functions Can Produce a Value}
+At the command prompt in a terminal window (Type ``Terminal'' in Spotlight in OS X or Press Windows + R to bring up the Run box and type cmd.exe to open a terminal), type in node and hit Enter. You should be greeted with the Node prompt (a ``>''). Type in the following:
+
+\begin{lstlisting}
+function addOne (n)  { return n+1; }
+\end{lstlisting}
+
+And press the \emph{Enter} key.
+
+Then type the following pressing enter at the end of the line:
+
+\begin{lstlisting}
+addOne(1);
+\end{lstlisting}
+
+You should see:
+
+\begin{lstlisting}
+2
+>
+\end{lstlisting}
+
+From here on out, it is implied that you need to press the \emph{Enter} key after typing in code to the Node prompt.
+
+\subsection{Functions Don't Need a Name}
+Type:
+
+\begin{lstlisting}
+(function () { return 'You never even call me by my name.'; })();
+\end{lstlisting}
+
+\subsection{Functions Can be Function Parameters}
+Type:
+
+\begin{lstlisting}
+function after () {
+    console.log(‘after’);
+}
+
+function before (callback) {
+    console.log(‘before’);
+    callback();
+}
+
+before(after);
+\end{lstlisting}
+
+This feature is taken advantage of in Continuation Passing Style.
+
+\section{Numbers}
+Type:
+
+\begin{lstlisting}
+typeof 1;
+typeof 1.1;
+\end{lstlisting}
+
+JavaScript is very egalitarian when it comes to numbers. It treats them all as floats.\footnote{\url{http://speakingjs.com/es5/ch11.html}} It will print numbers with nothing after the decimal place as integer numbers though.
+
+Side note: \emph{typeof} is a unary operator, not a function, so you don't need parentheses to use it.
+
+\subsection{Arithmetic}
+Type:
+
+\begin{lstlisting}
+1 + 2 * 6;
+(1 + 2) * 6;
+\end{lstlisting}
+
+Arithmetic operations are performed from left to right in precedence order. Expressions in parentheses are evaluated first.\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence}}
+
+\section{Strings}
+Type the following at the Node prompt:
+
+% TODO: How do we do typewriter quotes in TeX?
+\begin{lstlisting}
+
+\end{lstlisting}
+
+\end{document}
