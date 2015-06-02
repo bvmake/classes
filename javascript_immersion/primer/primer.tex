@@ -1,5 +1,7 @@
 \documentclass{article}
 
+\usepackage{verbatimbox} % \addvbuffer
+
 \usepackage[T1]{fontenc}  % \textquotedbl
 
 \usepackage{textcomp}     % \textquotesingle
@@ -63,7 +65,7 @@
 JavaScript is a prototypal, weakly typed, dynamically typed scripting language created for Netscape by Brendan Eich in 10 days in 1995\footnote{\url{ https://www.w3.org/community/webed/wiki/A_Short_History_of_JavaScript}}. All of these characteristics have specific implications for JavaScript, and we will explore each of them and others as we go along.
 
 \section{When in Doubt, Type it Out}
-This primer will take a kinesthetic, learning by doing, approach to JavaScript. As such, we will need some things, most notably a JavaScript REPL (Read Eval Print Loop—in our case Node) and a browser with decent console capabilities (Chrome or Firefox will suffice).
+This primer will take a kinesthetic, learning by doing, approach to JavaScript. As such, we will need some things, most notably a JavaScript REPL (Read Eval Print Loop, in our case, Node) and a browser with decent console capabilities (Chrome or Firefox will suffice).
 
 \subsection{I Seriously Hope You Have a Browser Installed Already}
 If not, there is no hope for you, but I heard they are serving refreshments somewhere.
@@ -206,5 +208,189 @@ Try:
 \end{lstlisting}
 
 A \emph{string primitive} is a value that is a string. A \emph{string literal} is literally \textquotedbl a string\textquotedbl. 
+
+\section{Objects}
+Type:
+\begin{lstlisting}
+({ 'sayHi' : function() { return 'Hi'; } }).sayHi();
+\end{lstlisting}
+
+You just made your first object and made it talk, congrats! Everything up to and including the left-most \{ and the right-most \} is what’s referred to as an \emph{object literal}.
+
+Everything that is not a number, a boolean value (true or false), null, or undefined is an object. Objects can be created using literals like above or \emph{new}-ed using a constructor function.
+
+Try:
+\begin{lstlisting}
+typeof 'abc';
+typeof new String('abc');
+typeof String('abc');
+typeof String(1);
+\end{lstlisting}
+
+It is important to note that the usage of \emph{new} with one of the wrapper constructors for the primitive types with yield an object. Using one of the wrapper constructors without \emph{new} works as a cast.
+
+\section{Assignment}
+Try:
+\begin{lstlisting}
+function spacesFromWord (word) {
+    var arr = word.split(/[a-zA-Z]/);
+    return arr.join(' ');
+}
+
+spacesFromWord('word');
+
+console.log(arr);
+
+function dashesFromWord(word) {
+    arr = word.split(/[a-zA-Z]/);
+    return arr.join('-');
+}
+
+console.log(arr);
+\end{lstlisting}
+
+Variables are a bit, well, interesting in JavaScript. Not really in a good way either.
+When the \emph{var} keyword is used, the scope of the variable declared is the containing function if declared inside a function.\footnote{\url{http://speakingjs.com/es5/ch11.html}} Because everything happens inside a global context, we want to be very careful to always use \emph{var} when declaring a variable.
+
+Alternatively, you might try:
+\begin{lstlisting}
+function tildesFromWord (word) {
+    return word.split(/[a-zA-Z]/).join('~');
+}
+\end{lstlisting}
+Since assignments are a potential source of errors in your code, you might consider only using them when the task you are trying to perform is sufficiently complex enough to warrant their use.
+
+% \emph{word.split(/[a-zA-Z]/).join('~')} 
+% is an example of what is known as function chaining. This technique is used by JavaScript frameworks such as jQuery to cut down on the amount of typing the user of the framework has to do.\footnote{\url{http://ejohn.org/blog/selectors-in-javascript/}}
+
+\section{Arrays}
+Try the following:
+\begin{lstlisting}
+[1, 2, 3];
+[1, 2, 3].join(',');
+[1, 2, 3].pop();
+var arr = [1, 2, 3];
+arr.push(4);
+arr;
+arr.sort(function(a, b) { return a > b ? - 1 : a  < b ? 1 : 0; }) 
+\end{lstlisting}
+
+Arrays in JavaScript are containers whose elements can be accessed by their index. Array indicies in JavaScript are zero-based.
+
+Try:
+\begin{lstlisting}
+[1,2,3][0];
+[1,2,3][1];
+\end{lstlisting}
+
+\section{Loops}
+Loops lie at the heart of every daemon, video game, desktop app, and collection processing routine under the sun. We'll cover loops next.
+\subsection{For}
+Type the following into the node prompt hitting \emph{Enter} after each line.
+
+\begin{lstlisting}
+function countToTen () {
+    for (var i = 1; i <= 10; i++) {
+        console.log(i.toString());
+    }
+}
+
+countToTen();
+\end{lstlisting}
+
+A \emph{for} loop consists of an initializer, a test, an incrementer, and a body.
+
+Above, \emph{var i = 0;} is the initializer. \emph{i <= 10;} is the test. \emph{i++} is the incrementer. The body of the for loop is \emph{console.log(i.toString());}.
+
+\emph{var i = 0;} is also an assignment statement. 
+
+\subsection {Other Types of Loops}
+The \emph{while} and \emph{do-while} loops are other types of loops available in JavaScript, but everything that can be done with those can be done with a for loop, so we won't be going into them in this primer.
+
+\section{Control Flow}
+Control flow statements do as advertised: they control the flow of program execution.
+\subsection{If and If-else}
+Type in the following at the prompt:
+
+\begin{lstlisting}
+function addTwo (n) {
+    if ( isNaN(n) ) {
+        console.log("not a number");
+        return n;
+    }
+    return n + 2;
+}
+
+addTwo(1);
+
+addTwo('r');
+\end{lstlisting}
+
+\section{Truth is Stranger Than Fiction}
+Try typing in the values in the left hand column.
+
+% Add space above and below table
+\addvbuffer[12pt]{\begin{tabular}{| l | l |}
+\hline
+Expression & Value \footnote{\url{https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/}} \\ \hline
+\textquotesingle 1\textquotesingle == 1 & true \\ \hline
+\textquotesingle 1\textquotesingle === 1 & false \\ \hline
+0 == false & true \\ \hline
+0 === false & false \\ \hline
+1 == true & true \\ \hline
+1 === true & false \\ \hline
+\textquotesingle\textquotesingle == false & true \\ \hline
+undefined == null & true \\ \hline
+undefined === null & false \\ \hline
+\textquotesingle true\textquotesingle == true & false \\ \hline
+\textquotesingle 1\textquotesingle == true & true \\ \hline
+\end{tabular}}
+
+Equality in JavaScript is also interesting. In JavaScript, there are two kinds of equality: equality (via the \emph{==} operator) and strict equality (via the \emph{===} operator). Strict equality does a type check first. If the types of the operands (the terms on the left and right of the \emph{===}) don't match, the value of the expression is \emph{false}.
+
+\section{Brief Introduction to Dev Tools}
+Let's look at a simple todo list app.
+
+\emph{TODO: expand on this}
+
+\section{Brief Introduction to AJAX}
+
+Get the example files by entering the following command at a regular (i.e. not Node) command prompt:
+
+\begin{lstlisting}
+cd ~
+\end{lstlisting}
+
+or the following if Windows is the operating system:
+
+\begin{lstlisting}
+cd %HOME%
+\end{lstlisting}
+
+\begin{lstlisting}
+git clone git@github.com:bvmake/classes.git
+\end{lstlisting}
+
+This will clone the classes folder into your home directory.
+
+If you are uncomfortable with git, there is a "Download ZIP" option on \url{https://github.com/bvmake/classes}.
+
+In order to run the todo list app from \url{https://github.com/bvmake/classes/tree/master/javascript_immersion/todo}, we are going to need to use the Node Package Manager to get a few things.
+
+Enter the following commands at the regular command prompt:
+
+\begin{lstlisting}
+$npm install sqlite3
+
+$npm install uuid
+\end{lstlisting}
+
+Once those packages have downloaded, run the app like so:
+
+\begin{lstlisting}
+node todo.js
+\end{lstlisting}
+
+\emph{TODO: expand on this}
 
 \end{document}
